@@ -1,0 +1,86 @@
+server:
+  port: 80
+  compression:
+    enabled: true
+    min-response-size: 10
+    excluded-user-agents: gozilla,traviata
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
+  servlet:
+    session:
+      timeout: 1m
+spring:
+  redis:
+    host: 10.10.23.157
+    port: 6379
+  application:
+    name: rb-umc-service
+  datasource:
+    url: jdbc:mysql://10.10.225.179:3306/rb-umc?characterEncoding=UTF-8&useSSL=false
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: 1qaz#EDC
+    hikari:
+      ## 最小空闲连接数量
+      minimum-idle: 20
+      ## 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      ## 连接池最大连接数，默认是10
+      maximum-pool-size: 30
+      ## 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      ## 连接池母子
+      pool-name: HikariCP
+      ## 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      ## 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  jpa:
+    show-sql: true
+    database: mysql
+#    hibernate:
+#      ddl-auto: update
+#    database-platform: com.ey.cn.pi.cc.umc.conf.MySQL5InnoDBDialectUtf8mb4
+#    properties:
+#      hibernate:
+#        dialect: com.ey.cn.pi.cc.umc.conf.MySQL5InnoDBDialectUtf8mb4
+
+eureka:
+  instance:
+    statusPageUrlPath: /actuator/info
+    healthCheckUrlPath: /actuator/health
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://FBI:topsecurity@10.10.85.33/eureka/
+
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 10000
+
+# LOGGING
+logging.file: log/${spring.application.name}.log
+logging:
+  file:
+    max-history: 10
+    max-size: 100MB
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: ERROR
+    com.ey: INFO
+
+oauth2:
+  client:
+    id: rb
+    secret: 123456
