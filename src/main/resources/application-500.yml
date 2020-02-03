@@ -13,9 +13,9 @@ spring:
     host: 10.10.23.157
     port: 6379
   application:
-    name: rb-umc-service
+    name: fssc-umc
   datasource:
-    url: jdbc:mysql://10.10.225.179:3306/rb-umc?characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://10.10.250.26:3306/fssc?characterEncoding=UTF-8&useSSL=false
     driverClassName: com.mysql.jdbc.Driver
     username: root
     password: 1qaz#EDC
