@@ -1,5 +1,5 @@
 server:
-  port: 8073
+  port: 9003
   compression:
     enabled: true
     min-response-size: 10
