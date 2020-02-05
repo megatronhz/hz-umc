@@ -55,7 +55,7 @@ public class ResourceServerConf extends ResourceServerConfigurerAdapter {
         http.authorizeRequests().antMatchers("/umc/account/**").permitAll();
         http.authorizeRequests().antMatchers("/webjars/**").permitAll();
         http.authorizeRequests().antMatchers("/**").permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
+        //http.authorizeRequests().anyRequest().authenticated();
     }
 
     @Override

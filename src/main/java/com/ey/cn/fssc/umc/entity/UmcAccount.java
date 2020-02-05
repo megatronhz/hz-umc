@@ -27,6 +27,9 @@ public class UmcAccount extends BaseEntity {
     @Column(name = "account", nullable = false, length = 64)
     private String account;
     @Basic
+    @Column(name = "org_code", nullable = false, length = 24)
+    private String orgCode;
+    @Basic
     @Column(name = "password", nullable = false, length = 64)
     private String password;
     @Basic

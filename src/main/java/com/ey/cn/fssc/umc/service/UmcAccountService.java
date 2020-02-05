@@ -634,4 +634,20 @@ public class UmcAccountService {
         List<String> userIds = accountUserDtos.stream().map(u -> u.getAcctId()).collect(Collectors.toList());
         return userIds;
     }
+
+    /**
+     * 根据账户ID查询账户信息
+     * @param acctId
+     * @return
+     */
+    public UmcAccountDto findByAcctId(String acctId){
+        UmcAccount umcAccount = repository.findByAcctId(acctId);
+        if(Objects.isNull(umcAccount)){
+            throw new BizException("账户不存在！");
+        }
+        UmcAccountDto umcAccountDto = new UmcAccountDto();
+        BeanUtils.copyProperties(umcAccount, umcAccountDto);
+
+        return umcAccountDto;
+    }
 }

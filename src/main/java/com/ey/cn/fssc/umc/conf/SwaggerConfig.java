@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 .parameterType("header").required(false).build();
         pars.add(token.build());
         return new Docket(DocumentationType.SWAGGER_2).groupName(Constant.SWAGGER_GROUP_NAME).apiInfo(apiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.ey.cn.pi.cc")).paths(PathSelectors.any()).build().globalOperationParameters(pars);
+                .apis(RequestHandlerSelectors.basePackage("com.ey.cn.fssc.umc")).paths(PathSelectors.any()).build().globalOperationParameters(pars);
     }
 
     @SuppressWarnings("deprecation")

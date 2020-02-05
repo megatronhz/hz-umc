@@ -15,7 +15,7 @@ spring:
   application:
     name: fssc-umc
   datasource:
-    url: jdbc:mysql://10.10.250.26:3306/fssc?characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://10.10.250.26:3306/fssc-umc?characterEncoding=UTF-8&useSSL=false
     driverClassName: com.mysql.jdbc.Driver
     username: root
     password: 1qaz#EDC

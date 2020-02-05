@@ -32,6 +32,8 @@ public interface UmcAccountRepository extends JpaRepository<UmcAccount, String>,
 
     List<UmcAccount> findAllByAccountIn(List<String> accounts);
 
+    UmcAccount findByAcctId(String acctId);
+
     @Query("select new com.ey.cn.fssc.umc.dto.AccountUserDto(u.acctId,u.account,u.userId,u.userName,u.userCode,u.status) from UmcAccount u where u.account in ?1 ")
     List<AccountUserDto> findAccountUserDtoByAccountIn(List<String> accounts);
 
