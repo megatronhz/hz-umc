@@ -24,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author: xiayihua
@@ -43,34 +44,39 @@ public class CompanyService {
     /**
      * 创建组织架构根节点
      *
-     * @param company
+     * @param companyDto
      */
-    private void createRootTreeNode(UmcCompany company) {
+    private void createRootTreeNode(UmcCompanyDto companyDto) {
         // 判断是否为子公司
-        String companyType = company.getType();
+        String companyType = companyDto.getType();
+        Boolean isLeaf = false;
 
-        // 判断新增还是编辑
-        Boolean create = StringUtils.isEmpty(company.getCoId());
-
-        // 非子公司作为跟节点
-        if (!"1".equals(companyType)) {
-            UmcOrgStrc rootNode;
-            if (create) {
-                rootNode = new UmcOrgStrc();
-                rootNode.setName(company.getName());
-                rootNode.setCode(company.getCode());
-                rootNode.setType(Constant.NodeType.COMPANY);
-                rootNode.setIsLeaf(true);
-                orgStrcService.createNode(rootNode);
-            }
+        UmcOrgStrc rootNode = new UmcOrgStrc();
+        // 创建子公司
+        if ("1".equals(companyType)) {
+            isLeaf = true;
+            rootNode.setParentId(companyDto.getParentId());
+            rootNode.setType(Constant.NodeType.CHILD_COMPANY);
+        }else{
+            rootNode.setType(Constant.NodeType.COMPANY);
         }
+        rootNode.setId(companyDto.getCoId());
+        rootNode.setName(companyDto.getName());
+        rootNode.setCode(companyDto.getCode());
 
-        // 更新公司节点名称
-        if (!create) {
-            UmcOrgStrc rootNode = orgStrcService.detailNode(company.getCode());
-            rootNode.setName(company.getName());
-            orgStrcService.updateNode(rootNode);
-        }
+        rootNode.setIsLeaf(isLeaf);
+        orgStrcService.createNode(rootNode);
+    }
+
+    /**
+     * 编辑组织架构根节点
+     * @param companyDto
+     */
+    private void updateRootTreeNode(UmcCompanyDto companyDto) {
+
+        UmcOrgStrc rootNode = orgStrcService.detailNodeById(companyDto.getCoId());
+        rootNode.setName(companyDto.getName());
+        orgStrcService.updateNode(rootNode);
     }
 
     /**
@@ -87,11 +93,13 @@ public class CompanyService {
         if (!CollectionUtils.isEmpty(umcCompanys)) {
             throw new BizException("公司已存在");
         }
+        String id = UUID.randomUUID().toString();
+        companyDto.setCoId(id);
+        this.createRootTreeNode(companyDto);
+
         UmcCompany umcCompany = new UmcCompany();
         BeanUtils.copyProperties(companyDto, umcCompany);
         companyRepository.save(umcCompany);
-
-        this.createRootTreeNode(umcCompany);
         return true;
     }
 
@@ -112,7 +120,7 @@ public class CompanyService {
         BeanUtils.copyProperties(companyDto, umcCompany);
         companyRepository.save(umcCompany);
 
-        this.createRootTreeNode(umcCompany);
+        this.updateRootTreeNode(companyDto);
 
         return true;
     }
@@ -126,7 +134,7 @@ public class CompanyService {
     @Transactional(rollbackFor = Exception.class)
     public Boolean delete(String coId) {
         List<UmcOrgStrc> orgStrcList = orgStrcService.queryNodeByParentId(coId);
-        if(!CollectionUtils.isEmpty(orgStrcList)){
+        if (!CollectionUtils.isEmpty(orgStrcList)) {
             throw new BizException("组织机构下存在数据，不能删除！");
         }
         companyRepository.deleteById(coId);
@@ -172,15 +180,16 @@ public class CompanyService {
 
     /**
      * 查询指定类型的公司数据
+     *
      * @param type
      * @param keyWord
      * @return
      */
-    public List<UmcCompanyDto> findChildCompany(String type, String keyWord){
+    public List<UmcCompanyDto> findChildCompany(String type, String keyWord) {
         List<UmcCompanyDto> umcCompanyDtos = Lists.newArrayList();
         List<UmcCompany> childCompanyList = companyRepository.findChildCompany(type, keyWord);
-        if(!CollectionUtils.isEmpty(childCompanyList)){
-            childCompanyList.forEach(e->{
+        if (!CollectionUtils.isEmpty(childCompanyList)) {
+            childCompanyList.forEach(e -> {
                 UmcCompanyDto dto = new UmcCompanyDto();
                 BeanUtils.copyProperties(e, dto);
                 umcCompanyDtos.add(dto);

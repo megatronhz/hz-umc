@@ -18,8 +18,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "umc_org_strc")
 public class UmcOrgStrc extends BaseEntity {
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @GeneratedValue(generator = "system-uuid")
+//    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+//    @GeneratedValue(generator = "system-uuid")
     @Id
     @Column(name = "id", nullable = false, length = 36)
     private String id;

@@ -43,22 +43,22 @@ public interface Constant extends com.ey.cn.fssc.umc.api.Constant {
         /**
          * 子公司
          */
-        String CHILD_COMPANY = "childCompany";
+        String CHILD_COMPANY = "ChildCompany";
 
         /**
          * 部门
          */
-        String DEPARTMENT = "department";
+        String DEPARTMENT = "Department";
 
         /**
          * 员工
          */
-        String EMPLOYEE = "employee";
+        String EMPLOYEE = "Employee";
 
         /**
          * 销售区域
          */
-        String SALES_RGN = "SalesRgn";
+        String JOB = "Job";
 
 
     }

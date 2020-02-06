@@ -14,8 +14,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "umc_company")
 public class UmcCompany extends BaseEntity {
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @GeneratedValue(generator = "system-uuid")
+//    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+//    @GeneratedValue(generator = "system-uuid")
     @Id
     @Column(name = "co_id", nullable = false, length = 36)
     private String coId;

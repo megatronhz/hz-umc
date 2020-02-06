@@ -29,10 +29,6 @@ public class UmcEmployee extends BaseEntity{
     private String code;
 
     @Basic
-    @Column(name = "org_code", nullable = false, length = 24)
-    private String orgCode;
-
-    @Basic
     @Column(name = "job", nullable = true, length = 46)
     private String job;
 

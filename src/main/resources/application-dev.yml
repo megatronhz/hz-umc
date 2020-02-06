@@ -10,8 +10,9 @@ server:
       timeout: 1m
 spring:
   redis:
-    host: 10.10.23.157
+    host: 10.10.60.54
     port: 6379
+    #database: 2
   application:
     name: fssc-umc
   datasource:

@@ -92,10 +92,13 @@ public class UmcOrgStrcService {
             orgStrcRepository.save(parent);
 
             //增加父节点数组字段 2020-01-15 xiayihua
-            List<String> parentIds = Lists.newArrayList();
-            parentIds.add(treeNode.getParentId());
-            if (StringUtils.isNotBlank(parent.getParentIds())) {
-                treeNode.setParentIds(parent.getParentIds());
+            if(StringUtils.isNotBlank(treeNode.getParentId())){
+                String parentIds = parent.getParentIds();
+                if("0".equals(parentIds)){
+                    treeNode.setParentIds(treeNode.getParentId());
+                }else{
+                    treeNode.setParentIds(parent.getParentIds()+","+treeNode.getParentId());
+                }
             }
         }
         return null != orgStrcRepository.save(treeNode);
@@ -365,10 +368,10 @@ public class UmcOrgStrcService {
         return items;
     }
 
-    public List<UmcOrgStrc> querySalesRgn() {
-        List<UmcOrgStrc> nodes = orgStrcRepository.findByType(Constant.NodeType.SALES_RGN);
-        return nodes;
-    }
+//    public List<UmcOrgStrc> querySalesRgn() {
+//        List<UmcOrgStrc> nodes = orgStrcRepository.findByType(Constant.NodeType.SALES_RGN);
+//        return nodes;
+//    }
 
 //    public Map<String, String> querySalesRgnName(List<String> salesRgnCodes) {
 //        if (!CollectionUtils.isEmpty(salesRgnCodes)) {

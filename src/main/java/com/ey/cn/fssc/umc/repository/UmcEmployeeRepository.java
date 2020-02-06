@@ -19,6 +19,6 @@ public interface UmcEmployeeRepository extends JpaRepository<UmcEmployee, String
 
     List<UmcEmployee> findByCode(String code);
 
-    @Query(value = "select c from UmcEmployee c where c.orgCode in (?1) and c.code like CONCAT('%', ?2, '%') or c.name like CONCAT('%', ?2, '%')")
+    @Query(value = "select c from UmcEmployee c where   c.code like CONCAT('%', ?2, '%') or c.name like CONCAT('%', ?2, '%')")
     List<UmcEmployee> findeByKeyWord(List<String> orgCodes, String keyWord);
 }
