@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * @Author: xiayihua
@@ -14,8 +15,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "umc_employee")
 public class UmcEmployee extends BaseEntity{
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @GeneratedValue(generator = "system-uuid")
+//    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+//    @GeneratedValue(generator = "system-uuid")
     @Id
     @Column(name = "emp_id", nullable = false, length = 36)
     private String empId;
@@ -43,4 +44,7 @@ public class UmcEmployee extends BaseEntity{
     @Basic
     @Column(name = "enabled", nullable = false, length = 1)
     private String enabled;
+
+    @OneToMany(mappedBy = "umcEmployee")
+    private Collection<UmcEmpDpt> umcEmpDpts;
 }

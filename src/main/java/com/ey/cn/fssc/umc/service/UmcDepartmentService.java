@@ -122,9 +122,11 @@ public class UmcDepartmentService {
      */
     public Boolean delete(String dptId) {
         //TODO 需要判断部门下是否有员工，如果有员工就不能删除
-
+        List<UmcOrgStrc> orgStrcList = orgStrcService.queryNodeByParentId(dptId);
+        if (!CollectionUtils.isEmpty(orgStrcList)) {
+            throw new BizException("部门下存在数据，不能删除！");
+        }
         departmentRepository.deleteById(dptId);
-
         return true;
     }
 

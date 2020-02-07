@@ -3,8 +3,8 @@ package com.ey.cn.fssc.umc.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ey.cn.fssc.umc.constant.Constant;
-import com.ey.cn.fssc.umc.dto.UmcAccountDto;
 import com.ey.cn.fssc.umc.dto.UmcCompanyDto;
+import com.ey.cn.fssc.umc.dto.UmcEmpDptDto;
 import com.ey.cn.fssc.umc.dto.UmcEmployeeDto;
 import com.ey.cn.fssc.umc.dto.UmcOrgStrcItemDto;
 import com.ey.cn.fssc.umc.entity.UmcOrgStrc;
@@ -38,7 +38,7 @@ public class UmcOrgStrcService {
     @Autowired
     private UmcOrgStrcRepository orgStrcRepository;
     @Autowired
-    private UmcAccountService accountService;
+    private UmcEmpDptService empDptService;
     @Autowired
     private CompanyService companyService;
     @Autowired
@@ -51,8 +51,7 @@ public class UmcOrgStrcService {
      * @param parentId
      * @return
      */
-    public List<UmcOrgStrc> unfoldTree(String type,
-                                       String parentId) {
+    public List<UmcOrgStrc> unfoldTree(String type, String parentId) {
 
         List<UmcOrgStrc> result = new ArrayList<>();
 
@@ -466,19 +465,14 @@ public class UmcOrgStrcService {
     public List<String> queryOrgCode() {
         List<String> orgCodes = Lists.newArrayList();
         //获取当前账户的ID
-        String acctId = UserUtils.getSecurityUser().getAcctId();
-        UmcAccountDto umcAccountDto = accountService.findByAcctId(acctId);
-        String orgCode = umcAccountDto.getOrgCode();
-        List<UmcOrgStrc> orgStrcs = orgStrcRepository.findByCode(orgCode);
-        if (CollectionUtils.isEmpty(orgStrcs)) {
-            throw new BizException("组织架构树中不存在所属机构");
+        String userId = UserUtils.getSecurityUser().getUserId();
+
+        List<UmcEmpDptDto> umcEmpDptDtos =  empDptService.findByEmpId(userId);
+        if(!CollectionUtils.isEmpty(umcEmpDptDtos)){
+           List<String> orgIds = umcEmpDptDtos.stream().map(UmcEmpDptDto::getRefId).collect(Collectors.toList());
+            orgCodes.addAll(orgIds);
         }
-        String id = orgStrcs.get(0).getId();
-        List<UmcOrgStrc> orgStrcList = orgStrcRepository.findOrgStrcByParentId(OrgStrcTypeEnum.CHILD_COMPANY.getCode(), id);
-        if (!CollectionUtils.isEmpty(orgStrcList)) {
-            orgCodes.addAll(orgStrcList.stream().map(UmcOrgStrc::getCode).collect(Collectors.toList()));
-        }
-        orgCodes.add(orgStrcs.get(0).getCode());
+
         return orgCodes;
     }
 }

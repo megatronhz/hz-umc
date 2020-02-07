@@ -20,12 +20,19 @@ public class UmcEmpDpt extends BaseEntity{
     @Column(name = "id", nullable = false, length = 36)
     private String id;
 
-    @Basic
-    @Column(name = "emp_id", nullable = false, length = 36)
-    private String empId;
+//    @Basic
+//    @Column(name = "emp_id", nullable = false, length = 36)
+//    private String empId;
+//
+//    @Basic
+//    @Column(name = "ref_id", nullable = false, length = 36)
+//    private String refId;
 
-    @Basic
-    @Column(name = "ref_id", nullable = false, length = 36)
-    private String refId;
+    @ManyToOne
+    @JoinColumn(name = "ref_id", referencedColumnName = "id", nullable = false)
+    private UmcOrgStrc umcOrgStrc;
 
+    @ManyToOne
+    @JoinColumn(name = "emp_id", referencedColumnName = "emp_id")
+    private UmcEmployee umcEmployee;
 }

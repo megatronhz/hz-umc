@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.UUID;
+
 /**
  * @author King 2019/6/12 下午6:20
  * <>
@@ -46,5 +48,13 @@ public class UmcUtils {
 //        Sort.Direction sortDirection = StringUtils.equals(direction, "desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
 //        return new Sort(sortDirection, column);
         return null;
+    }
+
+    /**
+     * 生成UUID，做为主键
+     * @return
+     */
+    public static String getUUID(){
+        return UUID.randomUUID().toString();
     }
 }

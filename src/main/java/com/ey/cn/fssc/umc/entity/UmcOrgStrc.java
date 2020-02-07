@@ -48,6 +48,9 @@ public class UmcOrgStrc extends BaseEntity {
     @Column(name = "parent_ids", nullable = false, length = 720)
     private String parentIds;
 
+    @OneToMany(mappedBy = "umcOrgStrc")
+    private Collection<UmcEmpDpt> umcEmpDpts;
+
     @Override
     public boolean equals(Object o) {
         if (this == o){

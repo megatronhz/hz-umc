@@ -1,14 +1,13 @@
 package com.ey.cn.fssc.umc.spec;
 
+import com.ey.cn.fssc.umc.entity.UmcEmpDpt;
 import com.ey.cn.fssc.umc.entity.UmcEmployee;
+import com.ey.cn.fssc.umc.entity.UmcOrgStrc;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +84,8 @@ public class UmcEmployeeSpec implements Specification<UmcEmployee> {
         }
 
         if (!CollectionUtils.isEmpty(orgCodes)){
-            CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("orgCode"));
+            Join<UmcEmployee, UmcOrgStrc> join = root.join("umcEmpDpts", JoinType.INNER).join("umcOrgStrc", JoinType.INNER);
+            CriteriaBuilder.In<String> in = criteriaBuilder.in(join.get("umcOrgStrc").get("id"));
             orgCodes.forEach(n -> in.value(n));
             ps.add(in);
         }
